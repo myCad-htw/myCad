@@ -3,7 +3,8 @@
 #include "Object.h"
 #include <typeinfo>
 
-
+using namespace std;
+using namespace Base;
 double PointVectorBase::BaseLength() {
 	return sqrt(pow(X, 2) + pow(Y, 2) + pow(Z, 2));
 };
