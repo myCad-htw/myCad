@@ -173,9 +173,11 @@ Vector Vector::operator +(Vector v1, Vector v2)
 /// <param name="v1"></param>
 /// <param name="v2"></param>
 /// <returns></returns>
+/// v1-v2)-v1
 Vector Vector::operator -(Vector v1, Vector v2)
 {
-	return v1.Add({ ((v1-v2)-v1) });
+	v2.MultiplyBy(-1);
+	return v1.Add({ v2 });
 }	
 Vector Vector::operator *(Vector v1, double factor)
 {

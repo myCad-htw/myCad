@@ -56,15 +56,15 @@ namespace Base
         bool IsCollinear(Vector v2);
 
         // Überladene Operatoren 
-        static Vector operator -(Vector v1);
+         Vector operator -( Vector  v1);
 
-        static Vector  operator +(Vector v1, Vector v2);
+        static Vector  operator +(Vector v1,  Vector v2);
 
-        static Vector operator -(Vector v1, Vector v2);
+        static  Vector operator -(Vector v1, Vector v2);
 
-        static  Vector operator *(Vector v1, double factor);
+        static   Vector operator *(Vector v1, double factor);
 
-        static Vector operator *(double factor, Vector v1);
+        static  Vector operator *(double factor, Vector v1);
 
 
         // fehlt noch geerbte Methoden

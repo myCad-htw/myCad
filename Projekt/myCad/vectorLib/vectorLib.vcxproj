@@ -25,7 +25,6 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PointVectorBase.cpp" />
     <ClCompile Include="Vector.cpp" />

@@ -15,7 +15,7 @@ namespace Base
 		double X;
 		double Y;
 		double Z;
-		static double Tolerance;
+		const double Tolerance = 1e-6;
 
 		PointVectorBase() :PointVectorBase(0, 0, 0) {
 

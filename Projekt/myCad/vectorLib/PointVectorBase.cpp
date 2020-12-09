@@ -16,9 +16,9 @@ double PointVectorBase::BaseDistanceTo(PointVectorBase pvb) {
 void PointVectorBase::AddToThis(vector<PointVectorBase>pvbs) {
 	
     for (PointVectorBase pvb : pvbs) {
-        X += pvb.X;
-        Y += pvb.Y;
-        Z += pvb.Z;
+        X +=  pvb.X;
+        Y +=  pvb.Y;
+        Z +=  pvb.Z;
     }
 };
 
