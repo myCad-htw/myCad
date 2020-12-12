@@ -1,193 +1,252 @@
+#pragma once
 #include "Vector.h"
 #include "Point.h"
-#include <vector>
-#include"PointVectorBase.h"
+#include <assert.h>
 #include <iostream> 
 #include<cmath>
+#include <cassert>
+
 
 using namespace std;
 using namespace Base;
 
 
-// [DataContract]
-Vector Vector::getXDir()
+inline Vector::Vector() : x(0.0f), y(0.0f), z(0.0f) {}
+
+inline Vector::Vector(float x, float y, float z) : x(x), y(y), z(z) {}
+
+inline Vector::Vector(const Vector& v) : x(v.x), y(v.y), z(v.z) {}
+
+inline std::ostream& operator<<(std::ostream& os, const Vector& v)
 {
-	return  Vector(1, 0, 0);
-}
-Vector Vector::getYDir()
-{
-	return  Vector(0, 1, 0);
-}
-Vector Vector::getZDir()
-{
-	return  Vector(0, 0, 1);
-}
-// [XmlIgnore]
- //Method aufrufen from Base Class BasClassName::MethodName
-double Vector::getLength()
-{
-	return  BaseLength();
-}
-double Vector::setLength()
-{
-	this->MultiplyMeBy( getLength());	
+    os << '(' << v.x << ',' << v.y << ',' << v.z << ')';
+    return os;
 }
 
-
-// Konstruktur 
-//Base = name Kons: name Base class();
-Vector::Vector() : Vector(0, 0, 0)
+inline bool operator==(const Vector& v1, const Vector& v2)
 {
-
-}
-Vector::Vector(double x, double y, double z) : PointVectorBase(x, y, z)
-{
-
-}
-Vector::Vector(Point constPoint) : Vector(constPoint.X, constPoint.Y, constPoint.Z)
-{
-
-}
-Vector::Vector(Point fromPoint, Point toPoint) : Vector(toPoint.X - fromPoint.X, toPoint.Y - fromPoint.Y, toPoint.Z - fromPoint.Z)
-{
-
-}
-Vector::Vector( const Vector& copyVector) : Vector(copyVector.X, copyVector.Y, copyVector.Z)
-{
-
+    return (AreEqual(v1.x, v2.x) &&
+        AreEqual(v1.y, v2.y) &&
+        AreEqual(v1.z, v2.z));
 }
 
- /// <summary>
-/// Addiert Vektoren zu diesem Vektor und gibt das Ergebnis ale neuen 
-/// Vektor zurück (this wird nicht verändert)
-/// </summary>
-/// <param name="vecs"></param>
-/// <returns></returns>
-Vector Vector::Add(vector<Vector> vecs)
+inline bool operator!=(const Vector& v1, const Vector& v2)
 {
-	Vector ret(*this) ;
-	ret.AddToMe(vecs);
-	return ret;
-}
-/// <summary>
-/// Addiert Vektoren zu diesem Vektor (this) und verändert dieses dadurch
-/// </summary>
-/// <param name="vecs"></param>
-void Vector::AddToMe(vector<Vector> vecs)
-{   
-
-	vector<PointVectorBase> all_vecs = { vecs.begin(),vecs.end()};
-	AddToThis(all_vecs);
+    return (!AreEqual(v1.x, v2.x) ||
+        !AreEqual(v1.y, v2.y) ||
+        !AreEqual(v1.z, v2.z));
 }
 
-Point Vector::AsPoint()
+inline Vector operator+(const Vector& v1, const Vector& v2)
 {
-	return  Point();
+    return Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
-/// <summary>
-/// Gibt Produkt dieses Vektors mit Faktor fac als neuen Vektor zurück
-/// </summary>
-/// <param name="fac"></param>
-/// <returns></returns>
-Vector Vector::MultiplyBy(double fac)
+inline Vector operator-(const Vector& v1, const Vector& v2)
 {
-	Vector ret(*this) ;
-	ret.MultiplyMeBy(fac);
-	return ret;
-}
-/// <summary>
-/// /// Multipliziert diesen Vektor mit Faktor fac
-/// </summary>
-/// <param name="fac"></param>
-void Vector::MultiplyMeBy(double fac)
-{
-	MultiplyThisBy(fac);
-}
-double Vector::DotProduct(Vector v2)
-{
-	return X* v2.X + Y * v2.Y + Z * v2.Z;
-}
-Vector Vector::CrossProduct(Vector v2)
-{
-	return  Vector(Y * v2.Z - Z * v2.Y, Z * v2.X - X * v2.Z, X * v2.Y - Y * v2.X);
+    return Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
-double Vector::AngleTo(Vector v2, Vector reference)
+inline Vector operator*(const Vector& v, float scalar)
 {
-	Vector mm_v1 = this->Normalize();
-	Vector mm_v2 = v2.Normalize();
-
-	double cosAlp = mm_v1.DotProduct(mm_v2);
-	double alp = acos(cosAlp);
-	//senkrechte auf v1
-	Vector mm_y = reference.CrossProduct(mm_v1).Normalize();
-	double doty = mm_y.DotProduct(mm_v2);
-	if (doty < 0)
-	{
-		return -alp;
-	}
-	return alp;
+    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-/// <summary>
-/// Gibt (neuen) normalisierten Vektor dieses Objekts zurück
-/// </summary>
-/// <returns></returns>
-Vector Vector::Normalize()
+inline Vector operator*(float scalar, const Vector& v)
 {
-	Vector ret(*this) ;
-	ret.Length = 1;
-	return ret;
-}
-void Vector::NormalizeMe()
-{
-	this->Length = 1;
-}
-/// <summary>
-/// Sind zwei Vektoren parallel (collinear) mit spezifizierter Toleranz
-/// </summary>
-/// <param name="v2">ist dieser Vektor parallel zu this</param>
-/// <param name="tolerance">Toleranz</param>
-/// <returns></returns>
-bool Vector::IsCollinear(Vector v2, double tolerance)
-{
-	return abs(abs(this->DotProduct(v2)) - Length * v2.Length) <= tolerance;
-}
-bool Vector::IsCollinear(Vector v2)
-{
-	return this->IsCollinear(v2, Tolerance);
-}
-// Überladene Operatoren 
-Vector Vector::operator -(Vector v1)
-{
-	return v1.MultiplyBy(-1);
-}
-Vector Vector::operator +(Vector v1, Vector v2)
-{
-	return v1.Add({ v2 });
-}
-/// <summary>
-/// Test ???????????????????????????????????????
-/// </summary>
-/// <param name="v1"></param>
-/// <param name="v2"></param>
-/// <returns></returns>
-/// v1-v2)-v1
-Vector Vector::operator -(Vector v1, Vector v2)
-{
-	v2.MultiplyBy(-1);
-	return v1.Add({ v2 });
-}	
-Vector Vector::operator *(Vector v1, double factor)
-{
-	return v1.MultiplyBy(factor);
+    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-Vector Vector::operator *(double factor, Vector v1)
+inline Vector operator/(const Vector& v, float scalar)
 {
-	return v1.MultiplyBy(factor);
+    assert(!EqualsZero(scalar));
+    scalar = 1.0f / scalar;
+    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
+inline Vector operator/(float scalar, const Vector& v)
+{
+    assert(!EqualsZero(scalar));
+    scalar = 1.0f / scalar;
+    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
+}
 
-// fehlt noch geerbte Methoden
+inline float DotProduct(const Vector& v1, const Vector& v2)
+{
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+inline Vector CrossProduct(const Vector& v1, const Vector& v2)
+{
+    return Vector(v1.y * v2.z - v1.z * v2.y,
+        v1.z * v2.x - v1.x * v2.z,
+        v1.x * v2.y - v1.y * v2.x);
+}
+
+inline Vector Lerp(const Vector& v1, const Vector& v2, float t)
+{
+    return Vector(Lerp(v1.x, v2.x, t),
+        Lerp(v1.y, v2.y, t),
+        Lerp(v1.z, v2.z, t));
+}
+
+inline Vector Clamp(const Vector& v, float min, float max)
+{
+    return Vector(Clamp(v.x, min, max),
+        Clamp(v.y, min, max),
+        Clamp(v.z, min, max));
+}
+
+inline Vector Min(const Vector& v1, const Vector& v2)
+{
+    return Vector(Min(v1.x, v2.x),
+        Min(v1.y, v2.y),
+        Min(v1.z, v2.z));
+}
+
+inline Vector Max(const Vector& v1, const Vector& v2)
+{
+    return Vector(Max(v1.x, v2.x),
+        Max(v1.y, v2.y),
+        Max(v1.z, v2.z));
+}
+
+inline float DistanceBetween(const Vector& v1, const Vector& v2)
+{
+    Vector distance = v1 - v2;
+    return distance.Length();
+}
+
+inline float DistanceBetweenSquared(const Vector& v1, const Vector& v2)
+{
+    Vector distance = v1 - v2;
+    return distance.LengthSquared();
+}
+
+inline Vector& Vector::operator=(const Vector& v)
+{
+    x = v.x;
+    y = v.y;
+    z = v.z;
+    return *this;
+}
+
+inline Vector& Vector::operator+=(const Vector& v)
+{
+    x += v.x;
+    y += v.y;
+    z += v.z;
+    return *this;
+}
+
+inline Vector& Vector::operator-=(const Vector& v)
+{
+    x -= v.x;
+    y -= v.y;
+    z -= v.z;
+    return *this;
+}
+
+inline Vector& Vector::operator*=(float scalar)
+{
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+    return *this;
+}
+
+inline Vector& Vector::operator/=(float scalar)
+{
+    assert(!EqualsZero(scalar));
+    scalar = 1.0f / scalar;
+    x *= scalar;
+    y *= scalar;
+    z *= scalar;
+    return *this;
+}
+
+inline Vector& Vector::operator-()
+{
+    x = -x;
+    y = -y;
+    z = -z;
+    return *this;
+}
+
+inline float& Vector::operator[](int i)
+{
+    if (i == 0) {
+        return x;
+    }
+    else if (i == 1) {
+        return y;
+    }
+    else if (i == 2) {
+        return z;
+    }
+    else {
+        assert("[] Access error!");
+    }
+}
+
+inline float Vector::X()
+{
+    return x;
+}
+
+inline float Vector::Y()
+{
+    return y;
+}
+
+inline float Vector::Z()
+{
+    return z;
+}
+
+inline void Vector::Set(float x, float y, float z)
+{
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
+
+inline void Vector::MakeZero()
+{
+    x = y = z = 0.0f;
+}
+
+inline bool Vector::IsZero()
+{
+    return EqualsZero(x) &&
+        EqualsZero(y) &&
+        EqualsZero(z);
+}
+
+inline float Vector::LengthSquared()
+{
+    return x * x + y * y + z * z;
+}
+
+inline float Vector::Length()
+{
+    return Sqrt(LengthSquared());
+}
+
+inline void Vector::Normalize()
+{
+    float magnitude = Length();
+    assert(!EqualsZero(magnitude));
+
+    magnitude = 1.0f / magnitude;
+
+    x *= magnitude;
+    y *= magnitude;
+    z *= magnitude;
+}
+
+inline bool Vector::IsNormalized()
+{
+    return AreEqual(Length(), 1.0f);
+}
+

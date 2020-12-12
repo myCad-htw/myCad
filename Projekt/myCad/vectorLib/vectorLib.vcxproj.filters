@@ -21,21 +21,12 @@
     <ClInclude Include="Vector.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="PointVectorBase.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Point.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Vector.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="PointVectorBase.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
