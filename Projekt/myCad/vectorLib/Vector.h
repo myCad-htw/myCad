@@ -5,6 +5,7 @@
 #include "Math.h"
 #include <ostream>
 #include "Point.h"
+#include<vector>
 using namespace std;
 namespace Base
 {
@@ -100,35 +101,36 @@ namespace Base
         //******************************************************************
 
         //******************************************************************
-        //* Friend Functions
+        //* Functions
         //******************************************************************
         // DotProduct
         //------------------------------------------------------------------
         // Computes the dot product between Vector v1 and Vector v2 and 
         // returns the result.
         //------------------------------------------------------------------
-        friend float DotProduct(const Vector& v1, const Vector& v2);
+    public:
+        float DotProduct(const Vector& v1, const Vector& v2);
         //------------------------------------------------------------------
         // CrossProduct
         //------------------------------------------------------------------
         // Computes the cross product between Vector v1 and Vector v2 and 
         // returns the result.
         //------------------------------------------------------------------
-        friend Vector CrossProduct(const Vector& v1, const Vector& v2);
+        Vector CrossProduct(const Vector& v1, const Vector& v2);
         //------------------------------------------------------------------
         // DistanceBetween
         //------------------------------------------------------------------
         // Returns the scalar distance between the Vector v1 and the Vector 
         // v2.
         //------------------------------------------------------------------
-        friend float DistanceBetween(const Vector& v1, const Vector& v2);
+        float DistanceBetween(const Vector& v1, const Vector& v2);
         //------------------------------------------------------------------
         // DistanceBetweenSquared
         //------------------------------------------------------------------
         // Returns the scalar squared distance between the Vector v1 and 
         // the Vector v2.
         //------------------------------------------------------------------
-        friend float DistanceBetweenSquared(const Vector& v1, const Vector& v2);
+         float DistanceBetweenSquared(const Vector& v1, const Vector& v2);
         //******************************************************************
 
         //******************************************************************
@@ -232,13 +234,29 @@ namespace Base
         // Sets the components of this Vector in such a way that their 
         // magnitude is equal to one.
         //------------------------------------------------------------------
-        void Normalize();
+        Vector Normalize();
         //------------------------------------------------------------------
         // IsNormalized
         //------------------------------------------------------------------
         // Compares the magnitude of this Vector to one.
         //------------------------------------------------------------------
         bool IsNormalized();
+        //------------------------------------------------------------------
+        // AddToThis
+        //------------------------------------------------------------------
+        // Adds vectors to this vector this and thereby changes it
+        //------------------------------------------------------------------
+        void AddToThis(vector<Vector>pvbs);
+        // Add
+        //------------------------------------------------------------------
+        // Adds vectors to this vector and gives the result all new
+        //------------------------------------------------------------------
+        Vector Add(vector<Vector>pvbs);
+
+        double AngleTo(Vector v2, Vector reference);
+
+        // Test ?????????????
+        bool IsCollinear(Vector v2, float tolerance);
         //******************************************************************
 
     public:

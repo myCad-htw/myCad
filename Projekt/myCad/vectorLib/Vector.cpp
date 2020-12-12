@@ -79,25 +79,25 @@ inline Vector Base::operator/(float scalar, const Vector& v)
     return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-inline float Base::DotProduct(const Vector& v1, const Vector& v2)
+float Vector::DotProduct(const Vector& v1, const Vector& v2)
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
-inline Vector Base::CrossProduct(const Vector& v1, const Vector& v2)
+ Vector Vector::CrossProduct(const Vector& v1, const Vector& v2)
 {
     return Vector(v1.y * v2.z - v1.z * v2.y,
         v1.z * v2.x - v1.x * v2.z,
         v1.x * v2.y - v1.y * v2.x);
 }
 
-inline float Base::DistanceBetween(const Vector& v1, const Vector& v2)
+ float Vector::DistanceBetween(const Vector& v1, const Vector& v2)
 {
     Vector distance = v1 - v2;
     return distance.Length();
 }
 
-inline float Base::DistanceBetweenSquared(const Vector& v1, const Vector& v2)
+ float Vector::DistanceBetweenSquared(const Vector& v1, const Vector& v2)
 {
     Vector distance = v1- v2;
     return distance.LengthSquared();
@@ -198,21 +198,58 @@ inline float Vector::Length()
     return sqrt(LengthSquared());
 }
 
-inline void Vector::Normalize()
+inline Vector Vector::Normalize()
 {
-    float magnitude = Length();
-    assert(!EqualsZero(magnitude));
+   Vector vec;
+   float magnitude = vec.Length();
+   assert(!EqualsZero(magnitude));
 
-    magnitude = 1.0f / magnitude;
+   magnitude = 1.0f / magnitude;
 
-    x *= magnitude;
-    y *= magnitude;
-    z *= magnitude;
+   vec.x *= magnitude;
+   vec.y *= magnitude;
+   vec.z *= magnitude; 
+   return vec;
 }
 
 inline bool Vector::IsNormalized()
 {
     return AreEqual(Length(), 1.0f);
+}
+
+void Vector::AddToThis(vector<Vector>pvbs) {
+
+    for (Vector pvb : pvbs) {
+        x += pvb.x;
+        y += pvb.y;
+        z += pvb.z;
+    }
+}
+Vector Vector::Add(vector<Vector> pvbs)
+{
+    Vector vec; 
+    vec.AddToThis(pvbs);
+    return vec;
+}
+double Vector::AngleTo(Vector v2, Vector reference)
+{
+    Vector mm_v1 = this->Normalize();
+    Vector mm_v2 = v2.Normalize();
+
+    float cosAlp = this->DotProduct(mm_v1,mm_v2);
+    float alp = acos(cosAlp);
+    //senkrechte auf v1
+    Vector mm_y = this->CrossProduct(reference,mm_v1).Normalize();
+    float doty = this->DotProduct(mm_y,mm_v2);
+    if (doty < 0)
+    {
+        return -alp;
+    }
+    return alp;
+}
+bool Vector::IsCollinear(Vector v2, float tolerance)
+{
+    return abs(abs(this->DotProduct(*this,v2) - Length() * v2.Length())) <= tolerance;
 }
 
 
