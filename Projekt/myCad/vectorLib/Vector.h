@@ -7,6 +7,8 @@
 #include "Point.h"
 #include<vector>
 using namespace std;
+
+
 namespace Base
 {
     class Vector 
@@ -35,6 +37,12 @@ namespace Base
         //------------------------------------------------------------------
         Vector(const Vector& v);
         //******************************************************************
+        Vector(Point constPoint) : Vector(constPoint.X, constPoint.Y, constPoint.Z) {}
+        Vector(Point fromPoint, Point toPoint) : Vector(toPoint.X - fromPoint.X, toPoint.Y - fromPoint.Y, toPoint.Z - fromPoint.Z) {}
+
+
+
+
 
         //******************************************************************
         //* Friend Operators

@@ -17,6 +17,8 @@ inline Vector::Vector(float x, float y, float z) : x(x), y(y), z(z) {}
 
 inline Vector::Vector(const Vector& v) : x(v.x), y(v.y), z(v.z) {}
 
+
+
 inline bool Base::AreEqual(float n1, float n2)
 {
     if (n1 == n2)
