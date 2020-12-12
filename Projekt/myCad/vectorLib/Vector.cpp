@@ -17,109 +17,89 @@ inline Vector::Vector(float x, float y, float z) : x(x), y(y), z(z) {}
 
 inline Vector::Vector(const Vector& v) : x(v.x), y(v.y), z(v.z) {}
 
-inline std::ostream& operator<<(std::ostream& os, const Vector& v)
+inline bool Base::AreEqual(float n1, float n2)
 {
-    os << '(' << v.x << ',' << v.y << ',' << v.z << ')';
-    return os;
+    if (n1 == n2)
+        return true;
+    else
+        return false;
 }
-
-inline bool operator==(const Vector& v1, const Vector& v2)
+inline bool Base:: EqualsZero(float v1)
+{
+    if (v1 == 0)
+        return true;
+    else
+        return false;
+}
+inline bool Base::operator==(const Vector& v1, const Vector& v2)
 {
     return (AreEqual(v1.x, v2.x) &&
         AreEqual(v1.y, v2.y) &&
         AreEqual(v1.z, v2.z));
 }
 
-inline bool operator!=(const Vector& v1, const Vector& v2)
+inline bool Base::operator!=(const Vector& v1, const Vector& v2)
 {
     return (!AreEqual(v1.x, v2.x) ||
         !AreEqual(v1.y, v2.y) ||
         !AreEqual(v1.z, v2.z));
 }
 
-inline Vector operator+(const Vector& v1, const Vector& v2)
+inline Vector Base::operator+(const Vector& v1, const Vector& v2)
 {
     return Vector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
-inline Vector operator-(const Vector& v1, const Vector& v2)
+inline Vector Base::operator-(const Vector& v1, const Vector& v2)
 {
     return Vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
-inline Vector operator*(const Vector& v, float scalar)
+inline Vector Base::operator*(const Vector& v, float scalar)
 {
     return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-inline Vector operator*(float scalar, const Vector& v)
+inline Vector Base::operator*(float scalar, const Vector& v)
 {
     return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-inline Vector operator/(const Vector& v, float scalar)
-{
-    assert(!EqualsZero(scalar));
-    scalar = 1.0f / scalar;
-    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
-}
-
-inline Vector operator/(float scalar, const Vector& v)
+inline Vector Base::operator/(const Vector& v, float scalar)
 {
     assert(!EqualsZero(scalar));
     scalar = 1.0f / scalar;
     return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
 }
 
-inline float DotProduct(const Vector& v1, const Vector& v2)
+inline Vector Base::operator/(float scalar, const Vector& v)
+{
+    assert(!EqualsZero(scalar));
+    scalar = 1.0f / scalar;
+    return Vector(v.x * scalar, v.y * scalar, v.z * scalar);
+}
+
+inline float Base::DotProduct(const Vector& v1, const Vector& v2)
 {
     return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
-inline Vector CrossProduct(const Vector& v1, const Vector& v2)
+inline Vector Base::CrossProduct(const Vector& v1, const Vector& v2)
 {
     return Vector(v1.y * v2.z - v1.z * v2.y,
         v1.z * v2.x - v1.x * v2.z,
         v1.x * v2.y - v1.y * v2.x);
 }
 
-inline Vector Lerp(const Vector& v1, const Vector& v2, float t)
-{
-    return Vector(Lerp(v1.x, v2.x, t),
-        Lerp(v1.y, v2.y, t),
-        Lerp(v1.z, v2.z, t));
-}
-
-inline Vector Clamp(const Vector& v, float min, float max)
-{
-    return Vector(Clamp(v.x, min, max),
-        Clamp(v.y, min, max),
-        Clamp(v.z, min, max));
-}
-
-inline Vector Min(const Vector& v1, const Vector& v2)
-{
-    return Vector(Min(v1.x, v2.x),
-        Min(v1.y, v2.y),
-        Min(v1.z, v2.z));
-}
-
-inline Vector Max(const Vector& v1, const Vector& v2)
-{
-    return Vector(Max(v1.x, v2.x),
-        Max(v1.y, v2.y),
-        Max(v1.z, v2.z));
-}
-
-inline float DistanceBetween(const Vector& v1, const Vector& v2)
+inline float Base::DistanceBetween(const Vector& v1, const Vector& v2)
 {
     Vector distance = v1 - v2;
     return distance.Length();
 }
 
-inline float DistanceBetweenSquared(const Vector& v1, const Vector& v2)
+inline float Base::DistanceBetweenSquared(const Vector& v1, const Vector& v2)
 {
-    Vector distance = v1 - v2;
+    Vector distance = v1- v2;
     return distance.LengthSquared();
 }
 
@@ -173,21 +153,6 @@ inline Vector& Vector::operator-()
     return *this;
 }
 
-inline float& Vector::operator[](int i)
-{
-    if (i == 0) {
-        return x;
-    }
-    else if (i == 1) {
-        return y;
-    }
-    else if (i == 2) {
-        return z;
-    }
-    else {
-        assert("[] Access error!");
-    }
-}
 
 inline float Vector::X()
 {
@@ -230,7 +195,7 @@ inline float Vector::LengthSquared()
 
 inline float Vector::Length()
 {
-    return Sqrt(LengthSquared());
+    return sqrt(LengthSquared());
 }
 
 inline void Vector::Normalize()
@@ -249,4 +214,5 @@ inline bool Vector::IsNormalized()
 {
     return AreEqual(Length(), 1.0f);
 }
+
 

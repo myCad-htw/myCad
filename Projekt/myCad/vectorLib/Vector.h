@@ -38,12 +38,19 @@ namespace Base
         //******************************************************************
         //* Friend Operators
         //******************************************************************
-        // Stream Insertion Operator
+        // AreEqual
         //------------------------------------------------------------------
-        // Writes the Vector v into the output stream in the format (x,y,z) 
-        // so it can be used by various iostream functions.
+         // Compares the value of two parameters  and returns true if they are 
+        // identical. Otherwise, it returns false.
         //------------------------------------------------------------------
-        friend ostream& operator << (std::ostream& os, const Vector& v);
+        friend bool AreEqual(float n1, float n2);
+        //------------------------------------------------------------------
+        // EqualsZero
+       //------------------------------------------------------------------
+        // Returns true if the value of this parameter is 
+        // equal to zero.
+       //------------------------------------------------------------------
+        friend bool EqualsZero(float v1);
         //------------------------------------------------------------------
         // Equal To Operator
         //------------------------------------------------------------------
@@ -109,34 +116,6 @@ namespace Base
         //------------------------------------------------------------------
         friend Vector CrossProduct(const Vector& v1, const Vector& v2);
         //------------------------------------------------------------------
-        // Lerp
-        //------------------------------------------------------------------
-        // Returns a linear interpolation between Vector v1 and Vector v2 
-        // for paramater t, in the closed interval [0, 1].
-        //------------------------------------------------------------------
-        friend Vector Lerp(const Vector& v1, const Vector& v2, float t);
-        //------------------------------------------------------------------
-        // Clamp - TODO: make this a method instead?
-        //------------------------------------------------------------------
-        // Clamps this Vector's x, y and z components to lie within min and 
-        // max.
-        //------------------------------------------------------------------
-        friend Vector Clamp(const Vector& v1, float min, float max);
-        //------------------------------------------------------------------
-        // Min
-        //------------------------------------------------------------------
-        // Returns a Vector whos x, y and z components are the minimum 
-        // components found in Vector v1 and Vector v2.
-        //------------------------------------------------------------------
-        friend Vector Min(const Vector& v1, const Vector& v2);
-        //------------------------------------------------------------------
-        // Max
-        //------------------------------------------------------------------
-        // Returns a Vector whos x, y and z components are the maximum 
-        // components found in Vector v1 and Vector v2.
-        //------------------------------------------------------------------
-        friend Vector Max(const Vector& v1, const Vector& v2);
-        //------------------------------------------------------------------
         // DistanceBetween
         //------------------------------------------------------------------
         // Returns the scalar distance between the Vector v1 and the Vector 
@@ -193,12 +172,6 @@ namespace Base
         //------------------------------------------------------------------
         Vector& operator - ();
         //------------------------------------------------------------------
-        // Array Subscript Operator
-        //------------------------------------------------------------------
-        // Allows access to the x, y and z components through an array 
-        // subscript notation.
-        //------------------------------------------------------------------
-        float& operator [] (int i);
         //******************************************************************
 
         //******************************************************************
@@ -268,27 +241,27 @@ namespace Base
         bool IsNormalized();
         //******************************************************************
 
-    private:
+    public:
         //******************************************************************
-        //* Private Member Variables
+        //* public Member Variables
         //******************************************************************
         // x
         //------------------------------------------------------------------
         // The x component of this Vector.
         //------------------------------------------------------------------
-        double x;
+        float x;
         //------------------------------------------------------------------
         // y
         //------------------------------------------------------------------
         // The y component of this Vector.
         //------------------------------------------------------------------
-        double y;
+        float y;
         //------------------------------------------------------------------
         // z
         //------------------------------------------------------------------
         // The z component of this Vector.
         //------------------------------------------------------------------
-        double z;
+        float z;
         //******************************************************************
 
     };
