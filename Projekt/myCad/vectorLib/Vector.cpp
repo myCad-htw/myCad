@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace Base;
+using namespace BasePoint;
 
 
 inline Vector::Vector() : x(0.0f), y(0.0f), z(0.0f) {}
@@ -16,6 +17,7 @@ inline Vector::Vector() : x(0.0f), y(0.0f), z(0.0f) {}
 inline Vector::Vector(float x, float y, float z) : x(x), y(y), z(z) {}
 
 inline Vector::Vector(const Vector& v) : x(v.x), y(v.y), z(v.z) {}
+
 
 
 

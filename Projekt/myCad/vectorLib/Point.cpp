@@ -1,8 +1,10 @@
+#pragma once
 #include "Point.h"
 #include <math.h>
 
 using namespace std;
 using namespace Base;
+using namespace BasePoint;
 
 Point Point::Add(vector<Vector> vecs) {
 	Point ret(*this);
@@ -25,6 +27,18 @@ Vector Point::AsVector() {
 }
 float Point::DistanceTo(Point point2) {
 	return sqrt(pow(point2.X - this->X, 2) + pow(point2.Y - this->Y, 2) + pow(point2.Z - this->Z, 2));
+}
+float Point::x()
+{
+	return X;
+}
+float Point::y()
+{
+	return Y;
+}
+float Point::z()
+{
+	return Z;
 }
 void Point::MultiplyThisBy(float factor) {
 	this->X = this->X * factor;
