@@ -38,27 +38,27 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Canevas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FenPrincipale.cpp">
+    <ClCompile Include="Canvas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FenTaille.cpp">
+    <ClCompile Include="WindowSize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mMainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="FenPrincipale.h">
+    <QtMoc Include="Canvas.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="FenTaille.h">
+    <QtMoc Include="WindowSize.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="Canevas.h">
+    <QtMoc Include="mMainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

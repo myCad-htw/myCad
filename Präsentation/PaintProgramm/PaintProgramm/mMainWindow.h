@@ -4,20 +4,20 @@
 #include <QtWidgets>
 
 //QT Desiging 
-class FenPrincipale : public QMainWindow
+class mMainWindow : public QMainWindow
 {
 
     Q_OBJECT
 
 public:
-    FenPrincipale();
+    mMainWindow();
     bool getDrawEnable();
     bool getRectangleEnable();
     bool getCercleEnable();
     bool getTraitEnable();
-    bool getRemplirEnable();
-    QColor getCouleur();
-    int getVeleurSlider();
+    bool getFillEnable();
+    QColor getColor();
+    int getValueSlider();
 
 public slots:
 
@@ -25,8 +25,8 @@ public slots:
     void slotRectangle();
     void slotCercle();
     void slotTrait();
-    void slotRemplir();
-    void slotCouleur();
+    void slotFill();
+    void slotColor();
 
     void slotSlider(int x);
 
@@ -35,10 +35,10 @@ private:
     bool rectangleEnable;
     bool cercleEnable;
     bool traitEnable;
-    bool remplirEnable;
-    int valeurSlider;
-    QColorDialog* couleurDialogue;
-    QColor couleur;
+    bool FillEnable;
+    int valueSlider;
+    QColorDialog* ColorDialogue;
+    QColor Color;
 };
 
 #endif

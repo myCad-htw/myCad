@@ -1,8 +1,8 @@
-#include "FenPrincipale.h"
-#include "Canevas.h"
-#include "FenTaille.h"
+#include "mMainWindow.h"
+#include "Canvas.h"
+#include "WindowSize.h"
 
-FenPrincipale::FenPrincipale()
+mMainWindow::mMainWindow()
 {
     resize(500, 500);
     //Initialisation variables
@@ -10,14 +10,14 @@ FenPrincipale::FenPrincipale()
     rectangleEnable = 0;
     cercleEnable = 0;
     traitEnable = 0;
-    valeurSlider = 1;
+    valueSlider = 1;
 
 
-    Canevas* canevas = new Canevas(this);
-    FenTaille* fenetretaille = new FenTaille(canevas);
-    setCentralWidget(canevas);
+    Canvas* canvas = new Canvas(this);
+    WindowSize* window = new WindowSize(canvas);
+    setCentralWidget(canvas);
 
-    //Menu Fichier
+    //File menu
     QMenu* menuFichier = menuBar()->addMenu("File");
 
     QAction* actionNouveau = new QAction("New", this);
@@ -27,9 +27,9 @@ FenPrincipale::FenPrincipale()
     QAction* actionOuvrir = new QAction("Open", this);
     menuFichier->addAction(actionOuvrir);
 
-    connect(actionNouveau, SIGNAL(triggered(bool)), fenetretaille, SLOT(creerClick()));
-    connect(actionSauvegarder, SIGNAL(triggered(bool)), canevas, SLOT(sauvegarderCanevas()));
-    connect(actionOuvrir, SIGNAL(triggered(bool)), canevas, SLOT(ouvrirCanevas()));
+    connect(actionNouveau, SIGNAL(triggered(bool)), window, SLOT(createClick()));
+    connect(actionSauvegarder, SIGNAL(triggered(bool)), canvas, SLOT(saveCanvas()));
+    connect(actionOuvrir, SIGNAL(triggered(bool)), canvas, SLOT(openCanvas()));
 
     //Menu forme
     QMenu* menuForme = menuBar()->addMenu("&Form");
@@ -52,111 +52,111 @@ FenPrincipale::FenPrincipale()
     //Menu outils
     QMenu* menuOutils = menuBar()->addMenu("Tools");
 
-    QAction* actionRemplir = new QAction("Fill", this);
-    menuOutils->addAction(actionRemplir);
+    QAction* actionFill = new QAction("Fill", this);
+    menuOutils->addAction(actionFill);
     QAction* actionRetour = new QAction("Go back", this);
     actionRetour->setShortcut(QKeySequence("Ctrl+Z"));
     menuOutils->addAction(actionRetour);
 
-    connect(actionRemplir, SIGNAL(triggered(bool)), this, SLOT(slotRemplir()));
-    connect(actionRetour, SIGNAL(triggered(bool)), canevas, SLOT(retourCanevas()));
+    connect(actionFill, SIGNAL(triggered(bool)), this, SLOT(slotFill()));
+    connect(actionRetour, SIGNAL(triggered(bool)), canvas, SLOT(retourCanevas()));
     //Barre d'outil
     QToolBar* toolBar = addToolBar("Color");
 
-    QPushButton* boutonCouleur = new QPushButton;
-    boutonCouleur->setText("Color");
-    couleurDialogue = new QColorDialog;
-    toolBar->addWidget(boutonCouleur);
+    QPushButton* boutonColor = new QPushButton;
+    boutonColor->setText("Color");
+    ColorDialogue = new QColorDialog;
+    toolBar->addWidget(boutonColor);
 
     QSlider* slider = new QSlider(Qt::Horizontal);
     slider->setRange(1, 15);
     toolBar->addWidget(slider);
 
-    connect(boutonCouleur, SIGNAL(clicked(bool)), this, SLOT(slotCouleur()));
+    connect(boutonColor, SIGNAL(clicked(bool)), this, SLOT(slotColor()));
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(slotSlider(int)));
 }
 //FONCTIONS
 
-bool FenPrincipale::getDrawEnable()
+bool mMainWindow::getDrawEnable()
 {
     return drawEnable;
 }
-bool FenPrincipale::getRectangleEnable()
+bool mMainWindow::getRectangleEnable()
 {
     return rectangleEnable;
 }
-bool FenPrincipale::getCercleEnable()
+bool mMainWindow::getCercleEnable()
 {
     return cercleEnable;
 }
-bool FenPrincipale::getTraitEnable()
+bool mMainWindow::getTraitEnable()
 {
     return traitEnable;
 }
 
-bool FenPrincipale::getRemplirEnable()
+bool mMainWindow::getFillEnable()
 {
-    return remplirEnable;
+    return FillEnable;
 }
 
-QColor FenPrincipale::getCouleur()
+QColor mMainWindow::getColor()
 {
-    return couleur;
+    return Color;
 }
-int FenPrincipale::getVeleurSlider()
+int mMainWindow::getValueSlider()
 {
-    return valeurSlider;
+    return valueSlider;
 }
 
 //SLOTS
-void FenPrincipale::slotDraw()
+void mMainWindow::slotDraw()
 {
     drawEnable = 1;
     rectangleEnable = 0;
     cercleEnable = 0;
-    remplirEnable = 0;
+    FillEnable = 0;
     traitEnable = 0;
 }
-void FenPrincipale::slotRectangle()
+void mMainWindow::slotRectangle()
 {
     drawEnable = 0;
     rectangleEnable = 1;
     cercleEnable = 0;
-    remplirEnable = 0;
+    FillEnable = 0;
     traitEnable = 0;
 }
-void FenPrincipale::slotCercle()
+void mMainWindow::slotCercle()
 {
     drawEnable = 0;
     rectangleEnable = 0;
     cercleEnable = 1;
-    remplirEnable = 0;
+    FillEnable = 0;
     traitEnable = 0;
 }
-void FenPrincipale::slotRemplir()
+void mMainWindow::slotFill()
 {
     drawEnable = 0;
     rectangleEnable = 0;
     cercleEnable = 0;
-    remplirEnable = 1;
+    FillEnable = 1;
     traitEnable = 0;
 }
 
-void FenPrincipale::slotTrait()
+void mMainWindow::slotTrait()
 {
     drawEnable = 0;
     rectangleEnable = 0;
     cercleEnable = 0;
-    remplirEnable = 0;
+    FillEnable = 0;
     traitEnable = 1;
 }
 
-void FenPrincipale::slotCouleur()
+void mMainWindow::slotColor()
 {
-    couleur = couleurDialogue->getColor();
+    Color = ColorDialogue->getColor();
 }
 
-void FenPrincipale::slotSlider(int x)
+void mMainWindow::slotSlider(int x)
 {
-    valeurSlider = x;
+    valueSlider = x;
 }

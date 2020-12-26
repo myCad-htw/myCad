@@ -1,12 +1,12 @@
 #include "PaintProgramm.h"
 #include <QtWidgets/QApplication>
-#include"FenPrincipale.h"
+#include "mMainWindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    FenPrincipale mainWindow;
-    mainWindow.setWindowTitle("myCad");
-    mainWindow.show();
+    mMainWindow Window;
+    Window.setWindowTitle("myCad");
+    Window.show();
     return a.exec();
 }

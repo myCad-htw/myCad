@@ -1,9 +1,9 @@
-#include "Canevas.h"
-#include "FenTaille.h"
+#include "Canvas.h"
+#include "WindowSize.h"
 
 
 
-Canevas::Canevas(FenPrincipale* p) : QWidget()
+Canvas::Canvas(mMainWindow* p) : QWidget()
 {
     pere = p;
 
@@ -18,14 +18,14 @@ Canevas::Canevas(FenPrincipale* p) : QWidget()
     label->setPixmap(*pixmapListe[pixActuel]);
 }
 
-void Canevas::paintEvent(QPaintEvent* event)
+void Canvas::paintEvent(QPaintEvent* event)
 {
 
 
 }
 
 //Event souris
-void Canevas::mouseMoveEvent(QMouseEvent* event)
+void Canvas::mouseMoveEvent(QMouseEvent* event)
 {
     if (pere->getDrawEnable())
     {
@@ -55,10 +55,10 @@ void Canevas::mouseMoveEvent(QMouseEvent* event)
     }
 
 }
-void Canevas::mousePressEvent(QMouseEvent* event)
+void Canvas::mousePressEvent(QMouseEvent* event)
 {
     if (pere->getRectangleEnable() || pere->getCercleEnable()
-        || pere->getRemplirEnable() || pere->getTraitEnable())
+        || pere->getFillEnable() || pere->getTraitEnable())
     {
         xPress = event->pos().x();
         yPress = event->pos().y();
@@ -82,7 +82,7 @@ void Canevas::mousePressEvent(QMouseEvent* event)
     }
 
 }
-void Canevas::mouseReleaseEvent(QMouseEvent* event)
+void Canvas::mouseReleaseEvent(QMouseEvent* event)
 {
     if (pere->getRectangleEnable())
     {
@@ -105,11 +105,11 @@ void Canevas::mouseReleaseEvent(QMouseEvent* event)
         drawTrait();
 
     }
-    if (pere->getRemplirEnable())
+    if (pere->getFillEnable())
     {
         xRelease = event->pos().x();
         yRelease = event->pos().y();
-        remplir();
+        fillUp();
 
     }
     if (pere->getDrawEnable())
@@ -119,24 +119,24 @@ void Canevas::mouseReleaseEvent(QMouseEvent* event)
 
 }
 //Fonctions
-void Canevas::draw()
+void Canvas::draw()
 {
     QPen pen;
 
     path->lineTo(xMove, yMove);
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
     painter->setPen(pen);
     painter->setRenderHint(QPainter::Antialiasing);
     painter->drawPath(*path);
 
     label->setPixmap(*pixmapListe[pixActuel]);
 }
-void Canevas::drawRectangle()
+void Canvas::drawRectangle()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -150,11 +150,11 @@ void Canevas::drawRectangle()
 
     label->setPixmap(*pixmapListe[pixActuel]);
 }
-void Canevas::drawProvisoirRectangle()
+void Canvas::drawProvisoirRectangle()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -170,11 +170,11 @@ void Canevas::drawProvisoirRectangle()
     pixActuel = pixmapListe.size() - 1;
 }
 
-void Canevas::drawCercle()
+void Canvas::drawCercle()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -187,11 +187,11 @@ void Canevas::drawCercle()
     painter->drawEllipse(xPress, yPress, xRelease - xPress, yRelease - yPress);
     label->setPixmap(*pixmapListe[pixActuel]);
 }
-void Canevas::drawProvisoirCercle()
+void Canvas::drawProvisoirCercle()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -207,11 +207,11 @@ void Canevas::drawProvisoirCercle()
     pixActuel = pixmapListe.size() - 1;
 }
 
-void Canevas::drawTrait()
+void Canvas::drawTrait()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -225,11 +225,11 @@ void Canevas::drawTrait()
     label->setPixmap(*pixmapListe[pixActuel]);
 
 }
-void Canevas::drawProvisoirTrait()
+void Canvas::drawProvisoirTrait()
 {
     QPen pen;
-    pen.setColor(pere->getCouleur());
-    pen.setWidth(pere->getVeleurSlider());
+    pen.setColor(pere->getColor());
+    pen.setWidth(pere->getValueSlider());
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -245,12 +245,12 @@ void Canevas::drawProvisoirTrait()
     pixActuel = pixmapListe.size() - 1;
 }
 
-void Canevas::remplir()
+void Canvas::fillUp()
 {
     painter->end();
     delete painter;
-    QRgb couleurCible, couleurReproduit;
-    QColor couleurBuff;
+    QRgb ColorCible, ColorReproduit;
+    QColor ColorBuff;
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixActuel + 1;
@@ -259,9 +259,9 @@ void Canevas::remplir()
 
     image = new QImage(xMax, yMax, QImage::Format_RGB32);
     *image = pixmapListe[pixActuel]->toImage();
-    couleurCible = image->pixel(xPress, yPress);
-    couleurReproduit = pere->getCouleur().rgb();
-    remplissage4(xPress, yPress, couleurCible, couleurReproduit);
+    ColorCible = image->pixel(xPress, yPress);
+    ColorReproduit = pere->getColor().rgb();
+    filling(xPress, yPress, ColorCible, ColorReproduit);
 
 
 
@@ -275,7 +275,7 @@ void Canevas::remplir()
     label->setPixmap(*pixmapListe[pixActuel]);
 }
 //Algorithmus zum Füllen einer Oberfläche
-int Canevas::remplissage4(int x, int y, QRgb colcible, QRgb colrep)
+int Canvas::filling(int x, int y, QRgb colcible, QRgb colrep)
 {
     int a, b, i;
     int lastPosition;
@@ -339,14 +339,14 @@ int Canevas::remplissage4(int x, int y, QRgb colcible, QRgb colrep)
 }
 
 //Fonction slots
-void Canevas::sauvegarderCanevas()
+void Canvas::saveCanvas()
 {
     QString fichier = QFileDialog::getSaveFileName(0, "Enregistrer l'image", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
 
     pixmapListe[pixActuel]->save(fichier);
 }
 
-void Canevas::ouvrirCanevas()
+void Canvas::openCanvas()
 {
     QString fichier = QFileDialog::getOpenFileName(0, "Ouvrir image", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
     painter->end();
@@ -358,14 +358,14 @@ void Canevas::ouvrirCanevas()
 
 }
 
-void Canevas::nouveauCanevas()
+void Canvas::newCanvas()
 {
     painter->end();
     delete painter;
     pixmapListe.erase(pixmapListe.begin(), pixmapListe.end());
     delete label;
-    xMax = FenTaille::getLongueur();
-    yMax = FenTaille::getHauteur();
+    xMax = WindowSize::getlength();
+    yMax = WindowSize::getHeight();
 
     pixmapListe.push_back(new QPixmap(xMax, yMax));
     pixActuel = pixmapListe.size() - 1;
@@ -376,7 +376,7 @@ void Canevas::nouveauCanevas()
     label->show();
     painter = new QPainter(pixmapListe[pixActuel]);
 }
-void Canevas::retourCanevas()
+void Canvas::back_to_Canvas()
 {
     if (pixActuel == 0) return;
     pixmapListe.remove(pixActuel);

@@ -1,9 +1,9 @@
 #pragma once
-#ifndef CANEVAS
-#define CANEVAS
+#ifndef CANVAS
+#define CANVAS
 #include <qwidget.h>
 #include <QtWidgets>
-#include "FenPrincipale.h"
+#include "mMainWindow.h"
 
 
 
@@ -25,13 +25,13 @@ private:
     int y;
 };
 
-class Canevas : public QWidget
+class Canvas : public QWidget
 {
     Q_OBJECT
 
 public:
 
-    Canevas(FenPrincipale* p);
+    Canvas(mMainWindow* p);
     //~Canevas();
 
     void draw();
@@ -41,8 +41,8 @@ public:
     void drawProvisoirCercle();
     void drawTrait();
     void drawProvisoirTrait();
-    void remplir();
-    int remplissage4(int x, int y, QRgb colcible, QRgb colrep);
+    void fillUp();
+    int filling(int x, int y, QRgb colcible, QRgb colrep);
 
     void paintEvent(QPaintEvent* event);
 
@@ -50,10 +50,10 @@ public:
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
 public slots:
-    void nouveauCanevas();
-    void sauvegarderCanevas();
-    void ouvrirCanevas();
-    void retourCanevas();
+    void newCanvas();
+    void saveCanvas();
+    void openCanvas();
+    void back_to_Canvas();
 
 private:
 
@@ -70,7 +70,7 @@ private:
 
     QPainter* painter;
     QLabel* label;
-    FenPrincipale* pere;
+    mMainWindow* pere;
     QGraphicsScene* scene;
     QGraphicsView* view;
     QImage* image;

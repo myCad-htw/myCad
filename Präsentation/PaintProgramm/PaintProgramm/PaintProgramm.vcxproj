@@ -89,16 +89,16 @@
     <QtRcc Include="PaintProgramm.qrc" />
     <QtUic Include="PaintProgramm.ui" />
     <QtMoc Include="PaintProgramm.h" />
-    <ClCompile Include="Canevas.cpp" />
-    <ClCompile Include="FenPrincipale.cpp" />
-    <ClCompile Include="FenTaille.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="mMainWindow.cpp" />
+    <ClCompile Include="WindowSize.cpp" />
     <ClCompile Include="PaintProgramm.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Canevas.h" />
-    <QtMoc Include="FenTaille.h" />
-    <QtMoc Include="FenPrincipale.h" />
+    <QtMoc Include="Canvas.h" />
+    <QtMoc Include="WindowSize.h" />
+    <QtMoc Include="mMainWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
